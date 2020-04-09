@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">PelaajaApp</string>
+    <string name="avaaLisaaIkkuna">avaaLisaaIkkuna</string>
+    <string name="mmrToggle">alkupisteet</string>
+    <string name="playerNameBox">anna pelaajan nimi</string>
+</resources>
