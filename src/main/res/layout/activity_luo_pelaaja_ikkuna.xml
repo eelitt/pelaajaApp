@@ -7,7 +7,7 @@
     tools:context=".luoPelaajaIkkuna">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/pelaajaNimiLaatikko"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
@@ -19,15 +19,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ToggleButton
-        android:id="@+id/toggleButton"
+        android:id="@+id/MmrToggleButton"
         android:layout_width="133dp"
         android:layout_height="51dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="16dp"
-        android:textOff="Alkupisteet"
+        android:onClick="showTextField"
+        android:textOff="aseta pisteet itse"
+        android:textOn="Aseta alkupisteet"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/pelaajaNimiLaatikko"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -39,21 +41,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/pelaajaNimiLaatikko" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/asetaMmrLaatikko"
         android:layout_width="139dp"
         android:layout_height="40dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="12dp"
         android:ems="10"
+        android:hint="@string/setMmrButton"
         android:inputType="textPersonName"
-        android:text="Name"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.866"
         app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/toggleButton" />
+        app:layout_constraintTop_toBottomOf="@+id/MmrToggleButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
