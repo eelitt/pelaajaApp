@@ -4,4 +4,5 @@
     <string name="mmrToggle">alkupisteet</string>
     <string name="playerNameBox">anna pelaajan nimi</string>
     <string name="setMmrButton">aseta rating</string>
+    <string name="luoPelaaja">Luo pelaaja</string>
 </resources>
