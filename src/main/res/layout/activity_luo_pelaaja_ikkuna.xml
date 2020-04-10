@@ -7,7 +7,7 @@
     tools:context=".luoPelaajaIkkuna">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/pelaajaNimiLaatikko"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
@@ -19,41 +19,70 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ToggleButton
-        android:id="@+id/toggleButton"
+        android:id="@+id/MmrToggleButton"
         android:layout_width="133dp"
         android:layout_height="51dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="16dp"
-        android:textOff="Alkupisteet"
+        android:onClick="showTextField"
+        android:textOff="aseta pisteet itse"
+        android:textOn="Aseta alkupisteet"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/pelaajaNimiLaatikko"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/luoPelaajaButton"
         android:layout_width="187dp"
         android:layout_height="42dp"
         android:layout_marginTop="20dp"
-        android:text="Button"
+        android:hint="@string/luoPelaaja"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/pelaajaNimiLaatikko" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/asetaMmrLaatikko"
         android:layout_width="139dp"
         android:layout_height="40dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="12dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
+        android:hint="@string/setMmrButton"
+        android:inputType="number"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.866"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/toggleButton" />
+        app:layout_constraintStart_toEndOf="@+id/luoPelaajaButton"
+        app:layout_constraintTop_toBottomOf="@+id/MmrToggleButton" />
+
+    <TableLayout
+        android:layout_width="304dp"
+        android:layout_height="391dp"
+        android:layout_marginTop="32dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/luoPelaajaButton">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
