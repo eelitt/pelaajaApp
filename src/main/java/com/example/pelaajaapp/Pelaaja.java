@@ -1,8 +1,10 @@
 package com.example.pelaajaapp;
 import android.view.View;
 
+import java.io.Serializable;
 
-public class Pelaaja {
+
+public class Pelaaja implements Serializable {
 
     private String nimi;
     private int mmr = 0;
