@@ -38,6 +38,7 @@
         android:layout_height="42dp"
         android:layout_marginTop="20dp"
         android:hint="@string/luoPelaaja"
+        android:onClick="luoPelaaja"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,31 +59,31 @@
         app:layout_constraintStart_toEndOf="@+id/luoPelaajaButton"
         app:layout_constraintTop_toBottomOf="@+id/MmrToggleButton" />
 
-    <TableLayout
-        android:layout_width="304dp"
-        android:layout_height="391dp"
-        android:layout_marginTop="32dp"
-        android:visibility="visible"
+    <EditText
+        android:id="@+id/loadLaatikko"
+        android:layout_width="230dp"
+        android:layout_height="99dp"
+        android:layout_marginTop="316dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:lines="10"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/luoPelaajaButton">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </TableLayout>
+    <Button
+        android:id="@+id/loadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:hint="load"
+        android:onClick="load"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loadLaatikko"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
