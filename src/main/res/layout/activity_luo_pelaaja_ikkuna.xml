@@ -10,80 +10,93 @@
         android:id="@+id/pelaajaNimiLaatikko"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/playerNameBox"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ToggleButton
-        android:id="@+id/MmrToggleButton"
-        android:layout_width="133dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="16dp"
-        android:onClick="showTextField"
-        android:textOff="aseta pisteet itse"
-        android:textOn="Aseta alkupisteet"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/pelaajaNimiLaatikko"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/luoPelaajaButton"
-        android:layout_width="187dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="20dp"
-        android:hint="@string/luoPelaaja"
-        android:onClick="luoPelaaja"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.125"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pelaajaNimiLaatikko" />
-
     <EditText
         android:id="@+id/asetaMmrLaatikko"
         android:layout_width="139dp"
         android:layout_height="40dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
         android:ems="10"
         android:hint="@string/setMmrButton"
         android:inputType="number"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.866"
+        app:layout_constraintHorizontal_bias="0.894"
         app:layout_constraintStart_toEndOf="@+id/luoPelaajaButton"
         app:layout_constraintTop_toBottomOf="@+id/MmrToggleButton" />
-
-    <EditText
-        android:id="@+id/loadLaatikko"
-        android:layout_width="230dp"
-        android:layout_height="99dp"
-        android:layout_marginTop="316dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:lines="10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/loadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:hint="load"
-        android:onClick="load"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/listaLaatikko"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.609"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loadLaatikko"
+        app:layout_constraintTop_toBottomOf="@+id/asetaMmrLaatikko"
+        app:layout_constraintVertical_bias="0.341" />
+
+    <Button
+        android:id="@+id/luoPelaajaButton"
+        android:layout_width="187dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="28dp"
+        android:hint="@string/luoPelaaja"
+        android:onClick="luoPelaaja"
+        app:layout_constraintBottom_toTopOf="@+id/listaLaatikko"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.191"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pelaajaNimiLaatikko"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="save"
+        android:text="Button"
+        app:layout_constraintBottom_toTopOf="@+id/listaLaatikko"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.64"
+        app:layout_constraintStart_toEndOf="@+id/loadButton"
+        app:layout_constraintTop_toBottomOf="@+id/asetaMmrLaatikko"
+        app:layout_constraintVertical_bias="0.341" />
+
+    <ToggleButton
+        android:id="@+id/MmrToggleButton"
+        android:layout_width="133dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="showTextField"
+        android:textOff="aseta pisteet itse"
+        android:textOn="Aseta alkupisteet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.875"
+        app:layout_constraintStart_toEndOf="@+id/pelaajaNimiLaatikko"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listaLaatikko"
+        android:layout_width="413dp"
+        android:layout_height="456dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="276dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
