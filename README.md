@@ -1,2 +1,2 @@
 # pelaajaApp
-learning project about java and phone programming.
+learning project about java and phone app programming.
