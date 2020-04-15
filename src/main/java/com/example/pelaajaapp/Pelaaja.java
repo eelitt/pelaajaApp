@@ -1,27 +1,18 @@
 package com.example.pelaajaapp;
-import android.os.Bundle;
-import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.Serializable;
-
-
-public class Pelaaja extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_player);
-    }
+public class Pelaaja {
 
     private String nimi;
     private int mmr = 0;
+    private boolean active;
+
     public Pelaaja(){}
-    public Pelaaja(String name, int ratinki){
-       nimi = name;
-       mmr = ratinki;
+    public Pelaaja(String nimi, int mmr){
+       this.nimi = nimi;
+       this.mmr = mmr;
+
     }
+
     public void setNimi(String name) {
         nimi = name;
     }
@@ -36,5 +27,9 @@ public class Pelaaja extends AppCompatActivity {
 
     public int getMmr() {
         return mmr;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }
