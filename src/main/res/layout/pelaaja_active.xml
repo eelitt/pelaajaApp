@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="12dp"
         android:layout_marginTop="9dp"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/holo_blue_dark"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -26,12 +26,13 @@
         android:layout_marginStart="17dp"
         android:layout_marginTop="12dp"
         android:layout_toEndOf="@+id/nameBox"
+        android:textColor="@android:color/holo_blue_dark"
         android:textSize="15sp" />
 
     <View
         android:id="@+id/selected_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/holo_red_dark"
+        android:background="@color/selected_overlay"
         android:visibility="invisible" />
 </RelativeLayout>

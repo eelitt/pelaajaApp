@@ -38,6 +38,6 @@ tools:context=".Pelaaja">
         android:id="@+id/selected_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/holo_red_dark"
+        android:background="@color/selected_overlay"
         android:visibility="invisible" />
 </RelativeLayout>

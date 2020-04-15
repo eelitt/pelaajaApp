@@ -54,8 +54,10 @@ public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener 
                 }else{
                     removeRange(positions.get(count -1), count);
                 }
-                for(int i =0; i < count; ++i) {
-                    positions.remove(0);
+                /*for(int i =0; i < count; ++i) {
+                        positions.remove(0);*/
+                if (count > 0) {
+                    positions.subList(0, count).clear();
                 }
 
             }

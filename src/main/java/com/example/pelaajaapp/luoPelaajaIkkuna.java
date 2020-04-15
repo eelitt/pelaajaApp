@@ -1,6 +1,7 @@
 package com.example.pelaajaapp;
 
         import androidx.appcompat.app.AppCompatActivity;
+        import androidx.recyclerview.widget.DefaultItemAnimator;
         import androidx.recyclerview.widget.LinearLayoutManager;
         import androidx.recyclerview.widget.RecyclerView;
         import java.lang.reflect.Type;
@@ -18,7 +19,7 @@ package com.example.pelaajaapp;
         import com.google.gson.reflect.TypeToken;
         import static android.view.View.VISIBLE;
 
-public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyViewHolder.ClickListener {
+public class luoPelaajaIkkuna extends AppCompatActivity  implements MyAdapter.MyViewHolder.ClickListener {
 
     ArrayList<Pelaaja> pelaajalista = new ArrayList<Pelaaja>();
    ToggleButton mmrToggleButton;
@@ -28,7 +29,7 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
     private RecyclerView.LayoutManager layoutManager;
     private MyAdapter myadapter;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
-    private ActionMode actionmode;
+    private ActionMode actionMode;
 
 
     int counter = 0;
@@ -44,21 +45,23 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
         myadapter = new MyAdapter(pelaajalista,this);
          listalaatikko.setAdapter(myadapter);
         listalaatikko.setLayoutManager(layoutManager);
+        listalaatikko.setItemAnimator(new DefaultItemAnimator());
 
     }
 
     @Override
     public void onItemClicked(int position){
-        if(actionmode != null){
+        
+        if(actionMode != null){
             toggleSelection(position);
         }else{
-            myadapter.removePlayer(position);
+           // myadapter.removePlayer(position);
         }
     }
     @Override
     public boolean onItemLongClicked(int position){
-        if(actionmode == null) {
-            actionmode = startActionMode(actionModeCallback);
+        if(actionMode == null) {
+            actionMode = startActionMode(actionModeCallback);
         }
         toggleSelection(position);
         return true;
@@ -67,10 +70,10 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
         myadapter.toggleSelection(position);
         int count = myadapter.getSelectedItemCount();
         if(count == 0){
-            actionmode.finish();
+            actionMode.finish();
         }else{
-            actionmode.setTitle(String.valueOf(count));
-            actionmode.invalidate();
+            actionMode.setTitle(String.valueOf(count));
+            actionMode.invalidate();
         }
 
     }
@@ -88,11 +91,6 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
             return false;
 }
 
-            @Override
-                    public void onDestroyActionMode(ActionMode mode) {
-                myadapter.clearSelection();
-                actionmode = null;
-    }
     @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item){
             switch(item.getItemId()) {
@@ -104,8 +102,13 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
                 default:
                     return false;
             }
-    }
 
+        }
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            myadapter.clearSelection();
+            actionMode = null;
+        }
     }
 
     public void showTextField(View view) {
