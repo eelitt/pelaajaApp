@@ -1,6 +1,7 @@
 package com.example.pelaajaapp;
 
         import androidx.appcompat.app.AppCompatActivity;
+        import androidx.recyclerview.widget.DefaultItemAnimator;
         import androidx.recyclerview.widget.LinearLayoutManager;
         import androidx.recyclerview.widget.RecyclerView;
         import java.lang.reflect.Type;
@@ -18,7 +19,7 @@ package com.example.pelaajaapp;
         import com.google.gson.reflect.TypeToken;
         import static android.view.View.VISIBLE;
 
-public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyViewHolder.ClickListener {
+public class luoPelaajaIkkuna extends AppCompatActivity  implements MyAdapter.MyViewHolder.ClickListener {
 
     ArrayList<Pelaaja> pelaajalista = new ArrayList<Pelaaja>();
    ToggleButton mmrToggleButton;
@@ -28,7 +29,7 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
     private RecyclerView.LayoutManager layoutManager;
     private MyAdapter myadapter;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
-    private ActionMode actionmode;
+    private ActionMode actionMode;
 
 
     int counter = 0;
@@ -39,26 +40,32 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
         setContentView(R.layout.activity_luo_pelaaja_ikkuna);
         load();
         listalaatikko = findViewById(R.id.listaLaatikko);
-        listalaatikko.setHasFixedSize(true);
+
        layoutManager = new LinearLayoutManager(this);
         myadapter = new MyAdapter(pelaajalista,this);
          listalaatikko.setAdapter(myadapter);
         listalaatikko.setLayoutManager(layoutManager);
+        listalaatikko.setItemAnimator(new DefaultItemAnimator());
 
     }
 
     @Override
     public void onItemClicked(int position){
-        if(actionmode != null){
-            toggleSelection(position);
+
+        if(actionMode != null){
+
+           toggleSelection(position);
         }else{
-            myadapter.removePlayer(position);
+           // myadapter.removePlayer(position);
         }
     }
     @Override
     public boolean onItemLongClicked(int position){
-        if(actionmode == null) {
-            actionmode = startActionMode(actionModeCallback);
+
+        if(actionMode == null) {
+
+            actionMode = startActionMode(actionModeCallback);
+
         }
         toggleSelection(position);
         return true;
@@ -66,13 +73,13 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
     private void toggleSelection(int position) {
         myadapter.toggleSelection(position);
         int count = myadapter.getSelectedItemCount();
-        if(count == 0){
-            actionmode.finish();
-        }else{
-            actionmode.setTitle(String.valueOf(count));
-            actionmode.invalidate();
-        }
+        if (count == 0) {
+            actionMode.finish();
+        } else{
 
+            actionMode.setTitle(String.valueOf(count));
+            actionMode.invalidate();
+        }
     }
 
     private class ActionModeCallback implements ActionMode.Callback {
@@ -88,11 +95,6 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
             return false;
 }
 
-            @Override
-                    public void onDestroyActionMode(ActionMode mode) {
-                myadapter.clearSelection();
-                actionmode = null;
-    }
     @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item){
             switch(item.getItemId()) {
@@ -104,8 +106,13 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
                 default:
                     return false;
             }
-    }
 
+        }
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            myadapter.clearSelection();
+            actionMode = null;
+        }
     }
 
     public void showTextField(View view) {
@@ -155,7 +162,7 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
             mmr = ApuOlio.getMmr();
         }
 
-        lisaaPelaaja(nimi, mmr);
+        lisaaPelaaja(nimi, mmr, false);
 
         nimiLaatikko.getText().clear();
         if(mmrToggleButton.isChecked()) {
@@ -164,9 +171,9 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
             asetammrLaatikko.setVisibility(View.INVISIBLE);
         }
     }
-    private void lisaaPelaaja(String name, int ratinki){
+    private void lisaaPelaaja(String name, int ratinki, boolean active){
 
-        pelaajalista.add(new Pelaaja(name, ratinki));
+        pelaajalista.add(new Pelaaja(name, ratinki, active));
         Log.i("maara", String.valueOf(pelaajalista.size()));
 
     }
