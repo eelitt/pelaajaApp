@@ -1,5 +1,7 @@
 package com.example.pelaajaapp;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import static android.view.View.VISIBLE;
 
 
 public class MyAdapter extends SelectableAdapter<MyAdapter.MyViewHolder> {
@@ -20,6 +23,7 @@ public class MyAdapter extends SelectableAdapter<MyAdapter.MyViewHolder> {
     private static final int Type_ACTIVE = 1;
 private ArrayList<Pelaaja> apuPelaajalista;
 private MyViewHolder.ClickListener clickListener;
+private Pelaaja apuPelaaja = new Pelaaja();
 
 
 public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener clicklistener){
@@ -28,10 +32,12 @@ public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener 
 
     this.clickListener = clicklistener;
 }
+
     public void removePlayer(int position) {
         apuPelaajalista.remove(position);
         notifyItemRemoved(position);
     }
+
     public void removePlayers(List<Integer> positions){
 
         Collections.sort(positions, new Comparator<Integer>(){
@@ -72,28 +78,38 @@ public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener 
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+
         final int layout = viewType == TYPE_INACTIVE ? R.layout.activity_player : R.layout.pelaaja_active;
         View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         return new MyViewHolder(v, clickListener);
     }
+
+
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position){
+    public void onBindViewHolder(MyViewHolder holder, int position) {
 
         final Pelaaja currentPelaaja = apuPelaajalista.get(position);
+
         holder.apuNimilaatikko.setText(currentPelaaja.getNimi());
         holder.apuMmrasetaLaatikko.setText(String.valueOf(currentPelaaja.getMmr()));
-        holder.selectedOverlay.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
-    }
+
+        }
+
     @Override
 
     public int getItemCount(){
         return apuPelaajalista.size();
     }
 
-    @Override
+   @Override
     public int getItemViewType(int position){
 
         final Pelaaja currentPelaaja = apuPelaajalista.get(position);
+        if(isSelected(position)){
+            currentPelaaja.setActive(true);
+        }else{
+            currentPelaaja.setActive(false);
+        }
         return currentPelaaja.isActive() ? Type_ACTIVE : TYPE_INACTIVE;
 
     }
@@ -103,7 +119,7 @@ public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener 
 
        public TextView apuNimilaatikko;
         public TextView apuMmrasetaLaatikko;
-        View selectedOverlay;
+
         private ClickListener listener;
 
         public MyViewHolder(View v, ClickListener listener) {
@@ -111,7 +127,7 @@ public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener 
 
             apuNimilaatikko =  v.findViewById(R.id.nameBox);
             apuMmrasetaLaatikko = v.findViewById(R.id.ratingBox);
-            selectedOverlay = v.findViewById(R.id.selected_overlay);
+
 
             this.listener = listener;
 
@@ -120,12 +136,16 @@ public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener 
 
         }
         @Override
-        public void onClick(View v){
+        public  void onClick(View v){
+
         if(listener != null){
+
              listener.onItemClicked(getLayoutPosition());
         }
 
         }
+
+
         @Override
         public boolean onLongClick(View v){
             if(listener != null){

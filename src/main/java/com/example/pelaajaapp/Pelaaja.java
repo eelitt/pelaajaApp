@@ -7,9 +7,10 @@ public class Pelaaja {
     private boolean active;
 
     public Pelaaja(){}
-    public Pelaaja(String nimi, int mmr){
+    public Pelaaja(String nimi, int mmr, boolean active){
        this.nimi = nimi;
        this.mmr = mmr;
+       this.active = active;
 
     }
 
@@ -27,6 +28,10 @@ public class Pelaaja {
 
     public int getMmr() {
         return mmr;
+    }
+
+    public void setActive(boolean active){
+        this.active = active;
     }
 
     public boolean isActive() {

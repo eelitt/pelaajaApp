@@ -40,7 +40,7 @@ public class luoPelaajaIkkuna extends AppCompatActivity  implements MyAdapter.My
         setContentView(R.layout.activity_luo_pelaaja_ikkuna);
         load();
         listalaatikko = findViewById(R.id.listaLaatikko);
-        listalaatikko.setHasFixedSize(true);
+
        layoutManager = new LinearLayoutManager(this);
         myadapter = new MyAdapter(pelaajalista,this);
          listalaatikko.setAdapter(myadapter);
@@ -51,17 +51,21 @@ public class luoPelaajaIkkuna extends AppCompatActivity  implements MyAdapter.My
 
     @Override
     public void onItemClicked(int position){
-        
+
         if(actionMode != null){
-            toggleSelection(position);
+
+           toggleSelection(position);
         }else{
            // myadapter.removePlayer(position);
         }
     }
     @Override
     public boolean onItemLongClicked(int position){
+
         if(actionMode == null) {
+
             actionMode = startActionMode(actionModeCallback);
+
         }
         toggleSelection(position);
         return true;
@@ -69,13 +73,13 @@ public class luoPelaajaIkkuna extends AppCompatActivity  implements MyAdapter.My
     private void toggleSelection(int position) {
         myadapter.toggleSelection(position);
         int count = myadapter.getSelectedItemCount();
-        if(count == 0){
+        if (count == 0) {
             actionMode.finish();
-        }else{
+        } else{
+
             actionMode.setTitle(String.valueOf(count));
             actionMode.invalidate();
         }
-
     }
 
     private class ActionModeCallback implements ActionMode.Callback {
@@ -158,7 +162,7 @@ public class luoPelaajaIkkuna extends AppCompatActivity  implements MyAdapter.My
             mmr = ApuOlio.getMmr();
         }
 
-        lisaaPelaaja(nimi, mmr);
+        lisaaPelaaja(nimi, mmr, false);
 
         nimiLaatikko.getText().clear();
         if(mmrToggleButton.isChecked()) {
@@ -167,9 +171,9 @@ public class luoPelaajaIkkuna extends AppCompatActivity  implements MyAdapter.My
             asetammrLaatikko.setVisibility(View.INVISIBLE);
         }
     }
-    private void lisaaPelaaja(String name, int ratinki){
+    private void lisaaPelaaja(String name, int ratinki, boolean active){
 
-        pelaajalista.add(new Pelaaja(name, ratinki));
+        pelaajalista.add(new Pelaaja(name, ratinki, active));
         Log.i("maara", String.valueOf(pelaajalista.size()));
 
     }
