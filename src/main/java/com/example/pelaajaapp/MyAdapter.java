@@ -1,6 +1,7 @@
 package com.example.pelaajaapp;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +27,10 @@ private MyViewHolder.ClickListener clickListener;
 private Pelaaja apuPelaaja = new Pelaaja();
 
 
+
 public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener clicklistener){
     super();
     apuPelaajalista = omaPelaajalista;
-
     this.clickListener = clicklistener;
 }
 
@@ -60,8 +61,7 @@ public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener 
                 }else{
                     removeRange(positions.get(count -1), count);
                 }
-                /*for(int i =0; i < count; ++i) {
-                        positions.remove(0);*/
+
                 if (count > 0) {
                     positions.subList(0, count).clear();
                 }
@@ -105,6 +105,7 @@ public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener 
     public int getItemViewType(int position){
 
         final Pelaaja currentPelaaja = apuPelaajalista.get(position);
+
         if(isSelected(position)){
             currentPelaaja.setActive(true);
         }else{
@@ -113,6 +114,14 @@ public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener 
         return currentPelaaja.isActive() ? Type_ACTIVE : TYPE_INACTIVE;
 
     }
+    public void filterList(ArrayList<Pelaaja> filteredList){
+
+       apuPelaajalista = filteredList;
+        notifyDataSetChanged();
+
+    }
+
+
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

@@ -42,15 +42,15 @@
         android:onClick="luoPelaaja"
         app:layout_constraintBottom_toTopOf="@+id/listaLaatikko"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.191"
+        app:layout_constraintHorizontal_bias="0.071"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pelaajaNimiLaatikko"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="139dp"
+        android:layout_height="62dp"
         android:layout_marginTop="32dp"
         android:onClick="save"
         android:text="tallenna muutokset"
@@ -84,5 +84,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/saveButton" />
+
+    <EditText
+        android:id="@+id/etsiBox"
+        android:layout_width="126dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:hint="Etsi"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/listaLaatikko"
+        app:layout_constraintEnd_toStartOf="@+id/saveButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/luoPelaajaButton"
+        app:layout_constraintVertical_bias="0.272" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
