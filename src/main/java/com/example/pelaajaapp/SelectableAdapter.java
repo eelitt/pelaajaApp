@@ -45,7 +45,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
 
     public List<Integer> getSelectedPlayers(){
       List<Integer> pelaajat = new ArrayList<>(selectedPlayers.size());
-        Pelaaja apuPelaaja;
+
       for(int i = 0; i < selectedPlayers.size(); ++i) {
           pelaajat.add(selectedPlayers.keyAt(i));
       }
