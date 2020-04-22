@@ -1,170 +1,170 @@
 package com.example.pelaajaapp;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.util.Log;
+import android.content.ClipData;
+import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
+import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static android.view.View.VISIBLE;
 
-
-public class MyAdapter extends SelectableAdapter<MyAdapter.MyViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements View.OnTouchListener , ItemTouchHelperAdapter {
 
     private static final String TAG = MyAdapter.class.getSimpleName();
-    private static final int TYPE_INACTIVE = 0;
-    private static final int Type_ACTIVE = 1;
-private ArrayList<Pelaaja> apuPelaajalista;
-private MyViewHolder.ClickListener clickListener;
-private Pelaaja apuPelaaja = new Pelaaja();
 
 
 
-public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener clicklistener){
+    private ArrayList<Pelaaja> apuPelaajalista;
+
+public MyAdapter(ArrayList<Pelaaja> omaPelaajalista){
     super();
     apuPelaajalista = omaPelaajalista;
-    this.clickListener = clicklistener;
+
+
+
 }
 
-    public void removePlayer(int position) {
-        apuPelaajalista.remove(position);
-        notifyItemRemoved(position);
-    }
 
-    public void removePlayers(List<Integer> positions){
 
-        Collections.sort(positions, new Comparator<Integer>(){
-            @Override
-            public int compare(Integer lhs, Integer rhs) {
-                return rhs-lhs;
-            }
-        });
-        while(!positions.isEmpty()){
-            if(positions.size() == 1){
-                removePlayer(positions.get(0));
-                positions.remove(0);
-            }else{
-                int count = 1;
-                while(positions.size() > count && positions.get(count).equals(positions.get(count - 1)-1)){
-                    ++count;
-                }
-                if (count == 1){
-                    removePlayer(positions.get(0));
-                }else{
-                    removeRange(positions.get(count -1), count);
-                }
-
-                if (count > 0) {
-                    positions.subList(0, count).clear();
-                }
-
-            }
-        }
-
-    }
-    private void removeRange(int positionStart, int itemCount){
-        for (int i = 0; i <itemCount; ++i){
-            apuPelaajalista.remove(positionStart);
-        }
-        notifyItemRangeRemoved(positionStart, itemCount);
-    }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
 
-        final int layout = viewType == TYPE_INACTIVE ? R.layout.activity_player : R.layout.pelaaja_active;
+        final int layout = R.layout.activity_player;
         View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-        return new MyViewHolder(v, clickListener);
+        return new MyViewHolder(v);
     }
 
 
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
 
         final Pelaaja currentPelaaja = apuPelaajalista.get(position);
-
+        sortList(apuPelaajalista);
         holder.apuNimilaatikko.setText(currentPelaaja.getNimi());
         holder.apuMmrasetaLaatikko.setText(String.valueOf(currentPelaaja.getMmr()));
+        holder.layoutti.setTag(position);
+        holder.layoutti.setOnDragListener(new DragListener());
+        holder.layoutti.setOnTouchListener(this);
 
-        }
+
+    }
 
     @Override
 
     public int getItemCount(){
+
         return apuPelaajalista.size();
     }
 
-   @Override
-    public int getItemViewType(int position){
-
-        final Pelaaja currentPelaaja = apuPelaajalista.get(position);
-
-        if(isSelected(position)){
-            currentPelaaja.setActive(true);
-        }else{
-            currentPelaaja.setActive(false);
-        }
-        return currentPelaaja.isActive() ? Type_ACTIVE : TYPE_INACTIVE;
-
-    }
     public void filterList(ArrayList<Pelaaja> filteredList){
 
        apuPelaajalista = filteredList;
         notifyDataSetChanged();
 
     }
+@Override
+public boolean onTouch(View v, MotionEvent event){
+
+    switch(event.getAction()){
+        case MotionEvent.ACTION_DOWN:
+            ClipData data = ClipData.newPlainText(" ", " ");
+            View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                v.startDragAndDrop(data, shadowBuilder, v, 0);
+            }else{
+
+            }
+            return true;
+    }
+    return false;
+}
+    public void sortList(ArrayList<Pelaaja> lista) {
+        Collections.sort(lista, new Comparator<Pelaaja>() {
+            @Override
+            public int compare(Pelaaja o1, Pelaaja o2) {
+                int mmr1 = o1.getMmr();
+                int mmr2 = o2.getMmr();
+
+                return mmr1-mmr2;
+            }
+        });
+    }
+
+    ArrayList<Pelaaja> getList() {
+    return apuPelaajalista;
+    }
+
+    public void updateList(ArrayList<Pelaaja> list) {
+    apuPelaajalista = list;
+    }
+
+static DragListener getDragInstance() {
+
+        return new DragListener();
+
+}
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+       Collections.swap(apuPelaajalista, fromPosition, toPosition);
+       notifyItemMoved(fromPosition, toPosition);
+       return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+    apuPelaajalista.remove(position);
+    notifyItemRemoved(position);
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
 
 
-
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-
-       public TextView apuNimilaatikko;
+        public TextView apuNimilaatikko;
         public TextView apuMmrasetaLaatikko;
+         RelativeLayout layoutti;
 
-        private ClickListener listener;
 
-        public MyViewHolder(View v, ClickListener listener) {
+        public MyViewHolder(View v) {
             super(v);
 
             apuNimilaatikko =  v.findViewById(R.id.nameBox);
             apuMmrasetaLaatikko = v.findViewById(R.id.ratingBox);
+            layoutti = v.findViewById(R.id.pelaajaRivi);
 
-
-            this.listener = listener;
-
-            v.setOnClickListener(this);
-            v.setOnLongClickListener(this);
-
-        }
-        @Override
-        public  void onClick(View v){
-
-        if(listener != null){
-
-             listener.onItemClicked(getLayoutPosition());
-        }
 
         }
 
 
         @Override
-        public boolean onLongClick(View v){
-            if(listener != null){
-              return listener.onItemLongClicked(getLayoutPosition());
+        public void onItemSelected() {
+        apuNimilaatikko.setTextColor(Color.LTGRAY);
+        apuMmrasetaLaatikko.setTextColor(Color.LTGRAY);
         }
-            return false;
-    }
-    public interface ClickListener {
-        void onItemClicked(int position);
-        boolean onItemLongClicked(int position);
+
+        @Override
+        public void onItemClear() {
+            apuNimilaatikko.setTextColor(Color.BLACK);
+            apuMmrasetaLaatikko.setTextColor(Color.BLACK);
+        }
+
+
+
+
     }
 
 
@@ -180,4 +180,5 @@ public MyAdapter(ArrayList<Pelaaja> omaPelaajalista, MyViewHolder.ClickListener 
 }
 
 
-}
+
+
