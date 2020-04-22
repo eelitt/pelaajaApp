@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<RelativeLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pelaajaRivi"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:foreground="?android:attr/selectableItemBackground"
-
-    >
-<RelativeLayout
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground">
 
 
-tools:context=".Pelaaja">
+
+
 
 
 <TextView
@@ -41,12 +38,5 @@ tools:context=".Pelaaja">
     style="@style/Base.TextAppearance.AppCompat.Subhead"
     android:textSize="15sp" />
 
-    <View
-        android:id="@+id/highlightOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:visibility="invisible" />
 </RelativeLayout>
 
-</androidx.cardview.widget.CardView>

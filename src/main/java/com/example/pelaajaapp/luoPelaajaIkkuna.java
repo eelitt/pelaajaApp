@@ -2,72 +2,95 @@ package com.example.pelaajaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+
 import android.content.SharedPreferences;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ToggleButton;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import static android.view.View.VISIBLE;
 
-public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyViewHolder.ClickListener {
+public class luoPelaajaIkkuna extends AppCompatActivity {
 
-    ArrayList<Pelaaja> pelaajalista = new ArrayList<Pelaaja>();
+
+
     ToggleButton mmrToggleButton;
     EditText asetammrLaatikko;
     EditText etsiBoxi;
     RecyclerView listalaatikko;
-    private RecyclerView.LayoutManager layoutManager;
+    RecyclerView vuoroPelaajatLaatikko;
+
+    private ArrayList<Pelaaja> pelaajalista = new ArrayList<>();
+    private ArrayList<Pelaaja> illanPelaajat = new ArrayList<>();
+
     private MyAdapter myadapter;
-    private ActionModeCallback actionModeCallback = new ActionModeCallback();
-    private ActionMode actionMode;
-
-
+    private MyAdapter adapteri;
+    private ItemTouchHelper objectItemTouchHelper;
     int counter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_luo_pelaaja_ikkuna);
         load();
         listalaatikko = findViewById(R.id.listaLaatikko);
+        vuoroPelaajatLaatikko = findViewById(R.id.iltalistalaatikko);
         etsiBoxi = findViewById(R.id.etsiBox);
+
 
         etsiBoxi.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 filter(s.toString());
             }
         });
 
-        layoutManager = new LinearLayoutManager(this);
-        myadapter = new MyAdapter(pelaajalista, this);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+
+        myadapter = new MyAdapter(pelaajalista);
         listalaatikko.setAdapter(myadapter);
         listalaatikko.setLayoutManager(layoutManager);
         listalaatikko.setItemAnimator(new DefaultItemAnimator());
+        listalaatikko.setOnDragListener(MyAdapter.getDragInstance());
+
+        adapteri = new MyAdapter(illanPelaajat);
+        vuoroPelaajatLaatikko.setAdapter(adapteri);
+        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this);
+        vuoroPelaajatLaatikko.setLayoutManager(layoutManager2);
+        vuoroPelaajatLaatikko.setItemAnimator(new DefaultItemAnimator());
+        vuoroPelaajatLaatikko.setOnDragListener(MyAdapter.getDragInstance());
+
+
 
     }
+
+    public ArrayList<Pelaaja> getPelaajalista() {
+        return pelaajalista;
+    }
+
 
     private void filter(String text) {
         ArrayList<Pelaaja> filteredList = new ArrayList<>();
@@ -79,77 +102,6 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
         }
         myadapter.filterList(filteredList);
 
-    }
-
-
-    @Override
-    public void onItemClicked(int position) {
-
-        if (actionMode != null) {
-
-            toggleSelection(position);
-        } else {
-            // myadapter.removePlayer(position);
-        }
-    }
-
-    @Override
-    public boolean onItemLongClicked(int position) {
-
-        if (actionMode == null) {
-
-            actionMode = startActionMode(actionModeCallback);
-
-        }
-        toggleSelection(position);
-        return true;
-    }
-
-    private void toggleSelection(int position) {
-        myadapter.toggleSelection(position);
-        int count = myadapter.getSelectedItemCount();
-        if (count == 0) {
-            actionMode.finish();
-        } else {
-
-            actionMode.setTitle(String.valueOf(count));
-            actionMode.invalidate();
-        }
-    }
-
-    private class ActionModeCallback implements ActionMode.Callback {
-
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            mode.getMenuInflater().inflate(R.menu.selected_menu, menu);
-
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.menu_remove:
-                    myadapter.removePlayers(myadapter.getSelectedPlayers());
-                    mode.finish();
-                    return true;
-
-                default:
-                    return false;
-            }
-
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            myadapter.clearSelection();
-            actionMode = null;
-        }
     }
 
     public void showTextField(View view) {
@@ -169,7 +121,9 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(pelaajalista);
+        String json1 = gson.toJson(illanPelaajat);
         editor.putString("pelaajalista", json);
+        editor.putString("illanPelaajat", json1);
         editor.apply();
     }
 
@@ -177,12 +131,17 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.PelaajaApp", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("pelaajalista", null);
+        String json1 = sharedPreferences.getString("illanPelaajat", null);
         Type type = new TypeToken<ArrayList<Pelaaja>>() {
         }.getType();
         pelaajalista = gson.fromJson(json, type);
+        illanPelaajat = gson.fromJson(json1, type);
 
         if (pelaajalista == null) {
             pelaajalista = new ArrayList<>();
+        }
+        if (illanPelaajat == null) {
+            illanPelaajat = new ArrayList<>();
         }
     }
 
@@ -202,7 +161,7 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
             mmr = ApuOlio.getMmr();
         }
 
-        lisaaPelaaja(nimi, mmr, false);
+        lisaaPelaaja(nimi, mmr);
 
         nimiLaatikko.getText().clear();
         if (mmrToggleButton.isChecked()) {
@@ -212,9 +171,9 @@ public class luoPelaajaIkkuna extends AppCompatActivity implements MyAdapter.MyV
         }
     }
 
-    private void lisaaPelaaja(String name, int ratinki, boolean active) {
+    private void lisaaPelaaja(String name, int ratinki) {
 
-        pelaajalista.add(new Pelaaja(name, ratinki, active));
+        pelaajalista.add(new Pelaaja(name, ratinki));
         Log.i("maara", String.valueOf(pelaajalista.size()));
 
     }
