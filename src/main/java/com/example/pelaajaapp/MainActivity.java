@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.PopupMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,15 +23,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button sekotaTiimitButton = findViewById(R.id.sekoitaJoukkueetIkkuna);
+
+        sekotaTiimitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                luoSekoitaJoukkueIkkuna(v);
+            }
+        });
+
     }
           public void luoIkkuna(View view)
         {
             Intent pelaajaIkkuna = new Intent(this, luoPelaajaIkkuna.class);
+
             startActivity(pelaajaIkkuna);
         }
         public void luoSekoitaJoukkueIkkuna(View view) {
+
             Intent sekoitajoukkueIkkuna = new Intent(this, sekoitaJoukkueet.class);
+
             startActivity(sekoitajoukkueIkkuna);
+
         }
         @Override
     public boolean onCreateOptionsMenu(Menu menu){

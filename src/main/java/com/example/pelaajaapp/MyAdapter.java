@@ -4,39 +4,41 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import androidx.core.view.DragStartHelper;
 import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements View.OnTouchListener , ItemTouchHelperAdapter {
+
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements View.OnTouchListener {
 
     private static final String TAG = MyAdapter.class.getSimpleName();
-
-
 
     private ArrayList<Pelaaja> apuPelaajalista;
 
 public MyAdapter(ArrayList<Pelaaja> omaPelaajalista){
     super();
+
     apuPelaajalista = omaPelaajalista;
 
-
-
 }
-
-
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -68,6 +70,7 @@ public MyAdapter(ArrayList<Pelaaja> omaPelaajalista){
     public int getItemCount(){
 
         return apuPelaajalista.size();
+
     }
 
     public void filterList(ArrayList<Pelaaja> filteredList){
@@ -76,22 +79,34 @@ public MyAdapter(ArrayList<Pelaaja> omaPelaajalista){
         notifyDataSetChanged();
 
     }
+
 @Override
 public boolean onTouch(View v, MotionEvent event){
 
-    switch(event.getAction()){
+    switch(event.getAction()) {
         case MotionEvent.ACTION_DOWN:
+            v.setBackgroundColor(Color.RED);
+            Log.i("actionindexi", String.valueOf(event.getActionIndex()));
             ClipData data = ClipData.newPlainText(" ", " ");
             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+
                 v.startDragAndDrop(data, shadowBuilder, v, 0);
-            }else{
 
             }
+        case MotionEvent.ACTION_BUTTON_RELEASE:
+
+            v.setBackgroundColor(Color.WHITE);
+
+            return false;
+    }
+
+
+
             return true;
     }
-    return false;
-}
+
+
     public void sortList(ArrayList<Pelaaja> lista) {
         Collections.sort(lista, new Comparator<Pelaaja>() {
             @Override
@@ -99,7 +114,7 @@ public boolean onTouch(View v, MotionEvent event){
                 int mmr1 = o1.getMmr();
                 int mmr2 = o2.getMmr();
 
-                return mmr1-mmr2;
+                return mmr2-mmr1;
             }
         });
     }
@@ -118,20 +133,9 @@ static DragListener getDragInstance() {
 
 }
 
-    @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-       Collections.swap(apuPelaajalista, fromPosition, toPosition);
-       notifyItemMoved(fromPosition, toPosition);
-       return true;
-    }
 
-    @Override
-    public void onItemDismiss(int position) {
-    apuPelaajalista.remove(position);
-    notifyItemRemoved(position);
-    }
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
+    class MyViewHolder extends RecyclerView.ViewHolder{
 
 
         public TextView apuNimilaatikko;
@@ -148,34 +152,7 @@ static DragListener getDragInstance() {
 
 
         }
-
-
-        @Override
-        public void onItemSelected() {
-        apuNimilaatikko.setTextColor(Color.LTGRAY);
-        apuMmrasetaLaatikko.setTextColor(Color.LTGRAY);
-        }
-
-        @Override
-        public void onItemClear() {
-            apuNimilaatikko.setTextColor(Color.BLACK);
-            apuMmrasetaLaatikko.setTextColor(Color.BLACK);
-        }
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
 
 }
 
