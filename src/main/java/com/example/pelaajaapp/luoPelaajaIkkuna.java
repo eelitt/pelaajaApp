@@ -2,16 +2,12 @@ package com.example.pelaajaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-
-
+import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,8 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import static android.view.View.VISIBLE;
 
-public class luoPelaajaIkkuna extends AppCompatActivity {
-
+public class luoPelaajaIkkuna extends AppCompatActivity{
 
 
     ToggleButton mmrToggleButton;
@@ -34,11 +29,12 @@ public class luoPelaajaIkkuna extends AppCompatActivity {
     RecyclerView vuoroPelaajatLaatikko;
 
     private ArrayList<Pelaaja> pelaajalista = new ArrayList<>();
-    private ArrayList<Pelaaja> illanPelaajat = new ArrayList<>();
+     public ArrayList<Pelaaja> illanPelaajat = new ArrayList<>();
 
     private MyAdapter myadapter;
     private MyAdapter adapteri;
-    private ItemTouchHelper objectItemTouchHelper;
+
+
     int counter = 0;
 
     @Override
@@ -50,6 +46,12 @@ public class luoPelaajaIkkuna extends AppCompatActivity {
         listalaatikko = findViewById(R.id.listaLaatikko);
         vuoroPelaajatLaatikko = findViewById(R.id.iltalistalaatikko);
         etsiBoxi = findViewById(R.id.etsiBox);
+
+            Intent jaaIllanPelaajatLista = new Intent(this, sekoitaJoukkueet.class);
+            jaaIllanPelaajatLista.putParcelableArrayListExtra("illanpelaajat", illanPelaajat);
+            startActivity(jaaIllanPelaajatLista);
+
+
 
 
         etsiBoxi.addTextChangedListener(new TextWatcher() {
@@ -66,7 +68,6 @@ public class luoPelaajaIkkuna extends AppCompatActivity {
                 filter(s.toString());
             }
         });
-
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
@@ -87,10 +88,15 @@ public class luoPelaajaIkkuna extends AppCompatActivity {
 
     }
 
-    public ArrayList<Pelaaja> getPelaajalista() {
-        return pelaajalista;
-    }
 
+
+    public  ArrayList<Pelaaja> getIllanPelaajalista() {
+        return this.illanPelaajat;
+    }
+    public RecyclerView getListalaatikko()
+    {return listalaatikko;}
+    public RecyclerView getVuoroPelaajatLaatikko()
+    {return vuoroPelaajatLaatikko;}
 
     private void filter(String text) {
         ArrayList<Pelaaja> filteredList = new ArrayList<>();
@@ -127,7 +133,7 @@ public class luoPelaajaIkkuna extends AppCompatActivity {
         editor.apply();
     }
 
-    private void load() {
+    public void load() {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.PelaajaApp", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("pelaajalista", null);
@@ -175,10 +181,14 @@ public class luoPelaajaIkkuna extends AppCompatActivity {
 
         pelaajalista.add(new Pelaaja(name, ratinki));
         Log.i("maara", String.valueOf(pelaajalista.size()));
+        Log.i("illanpelain", String.valueOf(illanPelaajat.size()));
 
     }
 
-
 }
+
+
+
+
 
 
